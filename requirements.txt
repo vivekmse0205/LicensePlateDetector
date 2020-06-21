@@ -1,0 +1,3 @@
+opencv-python==4.1.0.2
+pytesseract
+Flask==1.0.2
