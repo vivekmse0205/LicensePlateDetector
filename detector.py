@@ -1,5 +1,6 @@
 import os
 import cv2
+import random
 import numpy as np
 import pytesseract
 
@@ -66,7 +67,7 @@ class CharacterDetector(object):
                 y2 = y1 + h
                 final_classes.append(class_id[i])
                 output_boxes.append([x1, y1, x2, y2])
-
+        print([classes[i] for i in final_classes])
         return output_boxes
 
 
@@ -77,7 +78,9 @@ class LicensePlateDetector(object):
         pytesseract.pytesseract.tesseract_cmd = r'C:\\Users\\VivekStorm\\AppData\\Local\\Tesseract-OCR\\tesseract.exe'
         output_number_plate_list = []
         for i, each_plate_image in enumerate(image_list):
-            cv2.imwrite(str(i) + '_plate.jpg', each_plate_image)
+            each_plate_image =cv2.cvtColor(each_plate_image,cv2.COLOR_BGR2GRAY)
+            each_plate_image = cv2.medianBlur(each_plate_image, 5)
+            cv2.imwrite(str(i)+'_' +str(random.randint(100,999)) +'_plate.jpg', each_plate_image)
             output_number = pytesseract.image_to_string(each_plate_image)
             output_number = ''.join(e for e in output_number if e.isalnum())
             output_number_plate_list.append(output_number)
